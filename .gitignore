@@ -1,0 +1,11 @@
+/.idea
+/.allure
+/target
+/build
+/allure-results
+/out
+/test/resources/temporaryFiles
+/logs
+*.iml
+*.log
+**.local.properties

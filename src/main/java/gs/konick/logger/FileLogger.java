@@ -47,7 +47,7 @@ public class FileLogger implements Logger {
 
     // Только кладем сообщение в очередь
     public void log(Level level, String message) {
-        String logMessage = "%s [%s]: %s.[%s|%d]".formatted(
+        String logMessage = String.format("%s [%s]: %s.[%s|%d]",
                 LocalDateTime.now().format(FMT),
                 level,
                 message,

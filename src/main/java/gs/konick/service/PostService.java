@@ -5,23 +5,21 @@ import gs.konick.logger.FileLogger;
 import gs.konick.logger.Logger;
 import gs.konick.model.Post;
 import gs.konick.repository.PostRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 
+@Service
 public class PostService {
     private final PostRepository repository;
-    private final AtomicLong counter = new AtomicLong();
+    private final AtomicLong counter = new AtomicLong(1);
 
     private final Logger logger;
 
     public PostService(PostRepository repository) {
         this.repository = repository;
         this.logger = new FileLogger(this.getClass().getSimpleName());
-
-        save(new Post(1, "Test1"));
-        save(new Post(2, "Test2"));
-        save(new Post(3, "Test3"));
     }
 
     public Set<Post> all() {
@@ -35,7 +33,7 @@ public class PostService {
 
     public Post save(Post post) {
         if (post.getId() == 0) {
-            post.setId(counter.incrementAndGet());
+            post.setId(getNextId());
         }
         logger.info("Saving post: " + post);
         return repository.save(post);
@@ -43,6 +41,17 @@ public class PostService {
 
     public void removeById(long id) {
         logger.info("Removing post: " + id);
-        repository.removeById(id);
+        if (repository.getById(id).isPresent()) {
+            repository.removeById(id);
+        } else {
+            logger.warn("Post not found: " + id);
+        }
+    }
+
+    private long getNextId() {
+        while (repository.getById(counter.get()).isPresent()) {
+            counter.incrementAndGet();
+        }
+        return counter.get();
     }
 }

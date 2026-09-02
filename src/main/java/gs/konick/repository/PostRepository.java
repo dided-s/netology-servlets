@@ -4,27 +4,14 @@ import gs.konick.model.Post;
 
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
-// Stub
-public class PostRepository {
+public interface PostRepository {
 
-    private final Set<Post> posts = ConcurrentHashMap.newKeySet();
+    Set<Post> all();
 
-    public Set<Post> all() {
-        return posts;
-    }
+    Optional<Post> getById(long id);
 
-    public Optional<Post> getById(long id) {
-        return posts.stream().filter(post -> post.getId() == id).findFirst();
-    }
+    Post save(Post post);
 
-    public Post save(Post post) {
-        posts.add(post);
-        return post;
-    }
-
-    public void removeById(long id) {
-        posts.removeIf(post -> post.getId() == id);
-    }
+    void removeById(long id);
 }

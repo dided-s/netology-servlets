@@ -27,4 +27,12 @@ public class Post {
     public void setContent(String content) {
         this.content = content;
     }
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "id=" + id +
+                ", content='" + content + '\'' +
+                '}';
+    }
 }

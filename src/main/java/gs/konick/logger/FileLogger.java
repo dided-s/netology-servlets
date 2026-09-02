@@ -42,7 +42,7 @@ public class FileLogger implements Logger {
     }
 
     public FileLogger(String loggerName) {
-        this(System.getProperty("log.file"), loggerName);
+        this(System.getProperty("user.dir") + "/target/file.log", loggerName);
     }
 
     // Только кладем сообщение в очередь
